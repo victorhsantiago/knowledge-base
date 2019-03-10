@@ -2,64 +2,66 @@
   <div class="category-admin">
     <form novalidate class="md-layout">
       <md-card class="md-layout-item md-small-size-100">
-        <input type="hidden" id="category-id" v-model="category.id">
+        <md-card-content>
+          <input type="hidden" id="category-id" v-model="category.id">
 
-        <!-- category information area -->
-        <div class="md-layout md-gutter">
-          <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('name')" md-clearable>
-              <label for="category-name">Nome da categoria</label>
-              <md-input
-                name="category-name"
-                id="category-name"
-                autocomplete="given-name"
-                v-model="category.name"
-                :disabled="sending || mode === 'remove'"
-              />
-              <span
-                class="md-error"
-                v-if="!$v.category.name.required"
-              >Por favor, informe o nome da categoria</span>
-            </md-field>
+          <!-- category information area -->
+          <div class="md-layout md-gutter">
+            <div class="md-layout-item md-small-size-100">
+              <md-field :class="getValidationClass('name')" md-clearable>
+                <label for="category-name">Nome da categoria</label>
+                <md-input
+                  name="category-name"
+                  id="category-name"
+                  autocomplete="given-name"
+                  v-model="category.name"
+                  :disabled="sending || mode === 'remove'"
+                />
+                <span
+                  class="md-error"
+                  v-if="!$v.category.name.required"
+                >Por favor, informe o nome da categoria</span>
+              </md-field>
+            </div>
           </div>
-        </div>
 
-        <div class="md-layout md-gutter">
-          <div class="md-layout-item md-small-size-100">
-            <md-field>
-              <label for="path">Caminho</label>
-              <md-select v-model="category.parentId" name="path" id="category-parentId">
-                <md-option
-                  v-for="(c, index) in categories"
-                  :key="index"
-                  :value="c.id"
-                  :disabled="mode === 'remove'"
-                >{{ c.path }}</md-option>
-              </md-select>
-            </md-field>
+          <div class="md-layout md-gutter">
+            <div class="md-layout-item md-small-size-100">
+              <md-field>
+                <label for="path">Caminho</label>
+                <md-select v-model="category.parentId" name="path" id="category-parentId">
+                  <md-option
+                    v-for="(c, index) in categories"
+                    :key="index"
+                    :value="c.id"
+                    :disabled="mode === 'remove'"
+                  >{{ c.path }}</md-option>
+                </md-select>
+              </md-field>
+            </div>
           </div>
-        </div>
 
-        <!-- Action buttons -->
-        <md-card-actions>
-          <md-button
-            type="submit"
-            class="md-primary md-raised"
-            :disabled="sending"
-            @click.prevent="validateCategory"
-            v-if="mode === 'save'"
-          >Salvar categoria</md-button>
-          <md-button
-            type="submit"
-            class="md-accent md-raised"
-            :disabled="sending"
-            @click.prevent="remove"
-            v-if="mode === 'remove'"
-          >Remover categoria</md-button>
-          <md-button type="submit" :disabled="sending" @click.prevent="clearForm">Cancelar</md-button>
-        </md-card-actions>
+          <!-- Action buttons -->
+          <md-card-actions>
+            <md-button
+              type="submit"
+              class="md-primary md-raised"
+              :disabled="sending"
+              @click.prevent="validateCategory"
+              v-if="mode === 'save'"
+            >Salvar categoria</md-button>
+            <md-button
+              type="submit"
+              class="md-accent md-raised"
+              :disabled="sending"
+              @click.prevent="remove"
+              v-if="mode === 'remove'"
+            >Remover categoria</md-button>
+            <md-button type="submit" :disabled="sending" @click.prevent="clearForm">Cancelar</md-button>
+          </md-card-actions>
 
-        <md-progress-bar md-mode="indeterminate" v-if="sending"/>
+          <md-progress-bar md-mode="indeterminate" v-if="sending"/>
+        </md-card-content>
       </md-card>
     </form>
 

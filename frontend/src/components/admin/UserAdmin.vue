@@ -2,115 +2,117 @@
   <div class="user-admin">
     <form novalidate class="md-layout">
       <md-card class="md-layout-item md-small-size-100">
-        <input type="hidden" id="user-id" v-model="user.id">
+        <md-card-content>
+          <input type="hidden" id="user-id" v-model="user.id">
 
-        <!-- User information area -->
-        <div class="md-layout md-gutter">
-          <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('name')" md-clearable>
-              <label for="user-name">Nome...</label>
-              <md-input
-                name="user-name"
-                id="user-name"
-                autocomplete="given-name"
-                v-model="user.name"
-                :disabled="sending || mode === 'remove'"
-              />
-              <span
-                class="md-error"
-                v-if="!$v.user.name.required"
-              >Por favor, informe o nome do usuário</span>
-              <span class="md-error" v-else-if="!$v.user.name.minlength">Nome inválido</span>
-            </md-field>
+          <!-- User information area -->
+          <div class="md-layout md-gutter">
+            <div class="md-layout-item md-small-size-100">
+              <md-field :class="getValidationClass('name')" md-clearable>
+                <label for="user-name">Nome...</label>
+                <md-input
+                  name="user-name"
+                  id="user-name"
+                  autocomplete="given-name"
+                  v-model="user.name"
+                  :disabled="sending || mode === 'remove'"
+                />
+                <span
+                  class="md-error"
+                  v-if="!$v.user.name.required"
+                >Por favor, informe o nome do usuário</span>
+                <span class="md-error" v-else-if="!$v.user.name.minlength">Nome inválido</span>
+              </md-field>
+            </div>
+            <div class="md-layout-item md-small-size-100">
+              <md-field :class="getValidationClass('email')" md-clearable>
+                <label for="user-email">Email...</label>
+                <md-input
+                  type="email"
+                  name="user-email"
+                  id="user-email"
+                  v-model="user.email"
+                  :disabled="sending || mode === 'remove'"
+                />
+                <span
+                  class="md-error"
+                  v-if="!$v.user.email.required"
+                >Por favor, informe o email do usuário.</span>
+                <span class="md-error" v-else-if="!$v.user.email.email">Email inválido</span>
+              </md-field>
+            </div>
           </div>
-          <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('email')" md-clearable>
-              <label for="user-email">Email...</label>
-              <md-input
-                type="email"
-                name="user-email"
-                id="user-email"
-                v-model="user.email"
-                :disabled="sending || mode === 'remove'"
-              />
-              <span
-                class="md-error"
-                v-if="!$v.user.email.required"
-              >Por favor, informe o email do usuário.</span>
-              <span class="md-error" v-else-if="!$v.user.email.email">Email inválido</span>
-            </md-field>
-          </div>
-        </div>
 
-        <!-- Password confimation area -->
-        <div class="md-layout md-gutter" v-if="mode === 'save'">
-          <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('password')">
-              <label for="user-password">Senha...</label>
-              <md-input
-                name="user-password"
-                id="user-password"
-                v-model="user.password"
+          <!-- Password confimation area -->
+          <div class="md-layout md-gutter" v-if="mode === 'save'">
+            <div class="md-layout-item md-small-size-100">
+              <md-field :class="getValidationClass('password')">
+                <label for="user-password">Senha...</label>
+                <md-input
+                  name="user-password"
+                  id="user-password"
+                  v-model="user.password"
+                  :disabled="sending"
+                  type="password"
+                />
+                <span
+                  class="md-error"
+                  v-if="!$v.user.password.required"
+                >Por favor, informe a senha do usuário.</span>
+                <span class="md-error" v-else-if="!$v.user.password.minlength">Senha inválida.</span>
+              </md-field>
+            </div>
+            <div class="md-layout-item md-small-size-100">
+              <md-field :class="getValidationClass('confirmPassword')">
+                <label for="user-confirm-password">Confirme a senha...</label>
+                <md-input
+                  type="password"
+                  name="user-confirm-password"
+                  id="user-confirm-password"
+                  v-model="user.confirmPassword"
+                  :disabled="sending"
+                />
+                <span
+                  class="md-error"
+                  v-if="!$v.user.confirmPassword.required"
+                >Por favor, confirme a senha.</span>
+                <span
+                  class="md-error"
+                  v-else-if="!$v.user.confirmPassword.minlength"
+                >Confirmação inválida.</span>
+              </md-field>
+            </div>
+          </div>
+
+          <!-- Action buttons -->
+          <md-card-actions>
+            <div class="input" v-show="mode === 'save'">
+              <md-checkbox
+                id="user-admin"
+                v-model="user.admin"
+                class="md-primary"
                 :disabled="sending"
-                type="password"
-              />
-              <span
-                class="md-error"
-                v-if="!$v.user.password.required"
-              >Por favor, informe a senha do usuário.</span>
-              <span class="md-error" v-else-if="!$v.user.password.minlength">Senha inválida.</span>
-            </md-field>
-          </div>
-          <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('confirmPassword')">
-              <label for="user-confirm-password">Confirme a senha...</label>
-              <md-input
-                type="password"
-                name="user-confirm-password"
-                id="user-confirm-password"
-                v-model="user.confirmPassword"
-                :disabled="sending"
-              />
-              <span
-                class="md-error"
-                v-if="!$v.user.confirmPassword.required"
-              >Por favor, confirme a senha.</span>
-              <span
-                class="md-error"
-                v-else-if="!$v.user.confirmPassword.minlength"
-              >Confirmação inválida.</span>
-            </md-field>
-          </div>
-        </div>
-
-        <!-- Action buttons -->
-        <md-card-actions>
-          <div class="input" v-show="mode === 'save'">
-            <md-checkbox
-              id="user-admin"
-              v-model="user.admin"
-              class="md-primary"
+              >Administrador?</md-checkbox>
+            </div>
+            <md-button
+              type="submit"
+              class="md-primary md-raised"
               :disabled="sending"
-            >Administrador?</md-checkbox>
-          </div>
-          <md-button
-            type="submit"
-            class="md-primary md-raised"
-            :disabled="sending"
-            @click.prevent="validateUser"
-            v-if="mode === 'save'"
-          >Salvar usuário</md-button>
-          <md-button
-            type="submit"
-            class="md-accent md-raised"
-            :disabled="sending"
-            @click.prevent="remove"
-            v-if="mode === 'remove'"
-          >Remover usuário</md-button>
-          <md-button type="submit" :disabled="sending" @click.prevent="clearForm">Cancelar</md-button>
-        </md-card-actions>
+              @click.prevent="validateUser"
+              v-if="mode === 'save'"
+            >Salvar usuário</md-button>
+            <md-button
+              type="submit"
+              class="md-accent md-raised"
+              :disabled="sending"
+              @click.prevent="remove"
+              v-if="mode === 'remove'"
+            >Remover usuário</md-button>
+            <md-button type="submit" :disabled="sending" @click.prevent="clearForm">Cancelar</md-button>
+          </md-card-actions>
 
-        <md-progress-bar md-mode="indeterminate" v-if="sending"/>
+          <md-progress-bar md-mode="indeterminate" v-if="sending"/>
+        </md-card-content>
       </md-card>
     </form>
 

@@ -29,7 +29,7 @@ export default {
   border-radius: 8px;
   margin: 10px;
   padding: 20px;
-  background-color: #777;
+  background-color: #444;
   transition: all 0.5s ease;
   color: #ccc;
 }

@@ -68,7 +68,7 @@ export default {
           localStorage.setItem(userKey, JSON.stringify(res.data));
           this.sending = false;
         })
-        .then(this.$router.push({ path: "/home" }))
+        .then(this.$router.push({ path: "home" }))
         .catch(showError);
     },
     signUp() {

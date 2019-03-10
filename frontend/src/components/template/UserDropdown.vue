@@ -83,7 +83,7 @@ export default {
 
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0.2s, opacity 0.5s linear;
+  transition: visibility 0.2s, opacity 0.2s linear;
 }
 
 .user-dropdown:hover .user-dropdown-itens {
@@ -94,7 +94,7 @@ export default {
 .user-dropdown-itens > a {
   text-decoration: none;
   padding: 10px;
-  transition: all 0.4s;
+  transition: all 0.2s;
 }
 
 .user-dropdown-itens > a > i {

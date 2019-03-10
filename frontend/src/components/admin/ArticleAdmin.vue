@@ -2,123 +2,125 @@
   <div class="article-admin">
     <form novalidate class="md-layout">
       <md-card class="md-layout-item md-small-size-100">
-        <md-progress-bar md-mode="indeterminate" v-if="sending"/>
+        <md-card-content>
+          <md-progress-bar md-mode="indeterminate" v-if="sending"/>
 
-        <input type="hidden" id="article-id" v-model="article.id">
+          <input type="hidden" id="article-id" v-model="article.id">
 
-        <!-- article information area -->
-        <div class="md-layout md-gutter">
-          <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('name')" md-clearable>
-              <label for="article-name">Nome do artigo</label>
-              <md-input
-                name="article-name"
-                id="article-name"
-                autocomplete="given-name"
-                v-model="article.name"
-                :disabled="sending || mode === 'remove'"
-              />
-              <span
-                class="md-error"
-                v-if="!$v.article.name.required"
-              >Por favor, informe o nome do artigo</span>
-            </md-field>
-          </div>
-        </div>
-
-        <div class="md-layout md-gutter">
-          <div class="md-layout-item md-small-size-100">
-            <md-field>
-              <label for="path">Descrição</label>
-              <md-input
-                name="article-description"
-                id="article-description"
-                autocomplete="given-name"
-                v-model="article.description"
-                :disabled="sending || mode === 'remove'"
-              />
-              <span
-                class="md-error"
-                v-if="!$v.article.description.required"
-              >Por favor, informe a descrição do artigo</span>
-            </md-field>
-          </div>
-        </div>
-
-        <div class="md-layout md-gutter">
-          <div class="md-layout-item md-small-size-100">
-            <md-field>
-              <label for="path">Imagem URL</label>
-              <md-input
-                name="article-imageUrl"
-                id="article-imageUrl"
-                autocomplete="given-name"
-                v-model="article.imageUrl"
-                :disabled="sending || mode === 'remove'"
-              />
-            </md-field>
-          </div>
-        </div>
-
-        <!-- listagem de categorias -->
-        <div v-if="mode === 'save'">
+          <!-- article information area -->
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
-              <md-field>
-                <label for="path">Categoria</label>
-                <md-select v-model="article.categoryId" name="path" id="article-category">
-                  <md-option
-                    v-for="(c, index) in categories"
-                    :key="index"
-                    :value="c.id"
-                    :disabled="mode === 'remove'"
-                  >{{ c.path }}</md-option>
-                </md-select>
+              <md-field :class="getValidationClass('name')" md-clearable>
+                <label for="article-name">Nome do artigo</label>
+                <md-input
+                  name="article-name"
+                  id="article-name"
+                  autocomplete="given-name"
+                  v-model="article.name"
+                  :disabled="sending || mode === 'remove'"
+                />
+                <span
+                  class="md-error"
+                  v-if="!$v.article.name.required"
+                >Por favor, informe o nome do artigo</span>
               </md-field>
             </div>
           </div>
 
-          <!-- listagem de usuários -->
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field>
-                <label for="path">Autor</label>
-                <md-select v-model="article.userId" name="path" id="article-user">
-                  <md-option
-                    v-for="(u, index) in users"
-                    :key="index"
-                    :value="u.id"
-                    :disabled="mode === 'remove'"
-                  >{{ u.user }}</md-option>
-                </md-select>
+                <label for="path">Descrição</label>
+                <md-input
+                  name="article-description"
+                  id="article-description"
+                  autocomplete="given-name"
+                  v-model="article.description"
+                  :disabled="sending || mode === 'remove'"
+                />
+                <span
+                  class="md-error"
+                  v-if="!$v.article.description.required"
+                >Por favor, informe a descrição do artigo</span>
               </md-field>
             </div>
           </div>
-        </div>
 
-        <!-- Editor de texto -->
-        <div class="md-layout-item">
-          <vue-editor v-model="article.content" placeholder="Era uma vez..."></vue-editor>
-        </div>
+          <div class="md-layout md-gutter">
+            <div class="md-layout-item md-small-size-100">
+              <md-field>
+                <label for="path">Imagem URL</label>
+                <md-input
+                  name="article-imageUrl"
+                  id="article-imageUrl"
+                  autocomplete="given-name"
+                  v-model="article.imageUrl"
+                  :disabled="sending || mode === 'remove'"
+                />
+              </md-field>
+            </div>
+          </div>
 
-        <!-- Action buttons -->
-        <md-card-actions>
-          <md-button
-            type="submit"
-            class="md-primary md-raised"
-            :disabled="sending"
-            @click.prevent="saveArticle"
-            v-if="mode === 'save'"
-          >Salvar artigo</md-button>
-          <md-button
-            type="submit"
-            class="md-accent md-raised"
-            :disabled="sending"
-            @click.prevent="remove"
-            v-if="mode === 'remove'"
-          >Remover artigo</md-button>
-          <md-button type="submit" :disabled="sending" @click.prevent="clearForm">Cancelar</md-button>
-        </md-card-actions>
+          <!-- listagem de categorias -->
+          <div v-if="mode === 'save'">
+            <div class="md-layout md-gutter">
+              <div class="md-layout-item md-small-size-100">
+                <md-field>
+                  <label for="path">Categoria</label>
+                  <md-select v-model="article.categoryId" name="path" id="article-category">
+                    <md-option
+                      v-for="(c, index) in categories"
+                      :key="index"
+                      :value="c.id"
+                      :disabled="mode === 'remove'"
+                    >{{ c.path }}</md-option>
+                  </md-select>
+                </md-field>
+              </div>
+            </div>
+
+            <!-- listagem de usuários -->
+            <div class="md-layout md-gutter">
+              <div class="md-layout-item md-small-size-100">
+                <md-field>
+                  <label for="path">Autor</label>
+                  <md-select v-model="article.userId" name="path" id="article-user">
+                    <md-option
+                      v-for="(u, index) in users"
+                      :key="index"
+                      :value="u.id"
+                      :disabled="mode === 'remove'"
+                    >{{ u.user }}</md-option>
+                  </md-select>
+                </md-field>
+              </div>
+            </div>
+          </div>
+
+          <!-- Editor de texto -->
+          <div class="md-layout-item">
+            <vue-editor v-model="article.content" placeholder="Era uma vez..."></vue-editor>
+          </div>
+
+          <!-- Action buttons -->
+          <md-card-actions>
+            <md-button
+              type="submit"
+              class="md-primary md-raised"
+              :disabled="sending"
+              @click.prevent="saveArticle"
+              v-if="mode === 'save'"
+            >Salvar artigo</md-button>
+            <md-button
+              type="submit"
+              class="md-accent md-raised"
+              :disabled="sending"
+              @click.prevent="remove"
+              v-if="mode === 'remove'"
+            >Remover artigo</md-button>
+            <md-button type="submit" :disabled="sending" @click.prevent="clearForm">Cancelar</md-button>
+          </md-card-actions>
+        </md-card-content>
       </md-card>
     </form>
 

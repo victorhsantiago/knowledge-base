@@ -1,12 +1,12 @@
 <template>
   <div class="article-by-id">
-    <page-title icon="fa fa-folder-o" :main="article.name" :sub="article.description"/>
+    <page-title icon="fa fa-file" :main="article.name" :sub="article.description"/>
     <div class="article-content" v-html="article.content"></div>
   </div>
 </template>
 
 <script>
-import "highlightjs/styles/dracula.css";
+import "highlightjs/styles/monokai-sublime.css";
 import hljs from "highlightjs/highlight.pack.js";
 import { baseApiUrl } from "@/global";
 import axios from "axios";

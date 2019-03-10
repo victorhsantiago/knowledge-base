@@ -24,8 +24,10 @@ export default {
     };
   },
   methods: {
-    getStats() {
-      axios.get(`${baseApiUrl}/stats`).then(res => (this.stats = res.data));
+    async getStats() {
+      await axios
+        .get(`${baseApiUrl}/stats`)
+        .then(res => (this.stats = res.data));
     }
   },
   mounted() {

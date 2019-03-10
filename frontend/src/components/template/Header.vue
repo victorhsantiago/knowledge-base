@@ -11,11 +11,11 @@
         <span class="hamburger-inner"></span>
       </span>
     </button>
-    <div class="logo">
-      <router-link to="/" class="link">
-        <img src="@/assets/logo-white.png">
-      </router-link>
-    </div>
+
+    <router-link class="logo" to="/">
+      <img src="@/assets/logo-white.png">
+    </router-link>
+
     <app-user-dropdown v-if="!hideUserDropdown"></app-user-dropdown>
   </header>
 </template>
@@ -50,26 +50,18 @@ export default {
   background: linear-gradient(to left, #63a4ff, #1976d2);
 
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   z-index: 1;
 }
 
 .logo {
-  flex-grow: 1;
-  height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 
-.link {
-  height: 70%;
-}
-
-.link > img {
-  height: 100%;
-  width: auto;
+.logo img {
+  max-width: 180px;
 }
 </style>
