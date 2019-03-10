@@ -1,152 +1,112 @@
 <template>
-  <div class="article-admin">
-    <form novalidate class="md-layout">
-      <md-card class="md-layout-item md-small-size-100">
-        <md-progress-bar md-mode="indeterminate" v-if="sending"/>
-
-        <input type="hidden" id="article-id" v-model="article.id">
-
+  <div>
+    <v-form>
+      <input type="hidden" id="article-id" v-model="article.id">
+      <v-card-text>
+        <v-progress-linear :indeterminate="true" v-if="sending"></v-progress-linear>
         <!-- article information area -->
-        <div class="md-layout md-gutter">
-          <div class="md-layout-item md-small-size-100">
-            <md-field :class="getValidationClass('name')" md-clearable>
-              <label for="article-name">Nome do artigo</label>
-              <md-input
-                name="article-name"
-                id="article-name"
-                autocomplete="given-name"
-                v-model="article.name"
-                :disabled="sending || mode === 'remove'"
-              />
-              <span
-                class="md-error"
-                v-if="!$v.article.name.required"
-              >Por favor, informe o nome do artigo</span>
-            </md-field>
-          </div>
-        </div>
+        <v-text-field
+          name="article-name"
+          id="article-name"
+          autocomplete="given-name"
+          label="Nome do artigo"
+          v-model="article.name"
+          maxlength="20"
+          :disabled="sending || mode === 'remove'"
+          :rules="[rules.required]"
+          clearable
+        ></v-text-field>
 
-        <div class="md-layout md-gutter">
-          <div class="md-layout-item md-small-size-100">
-            <md-field>
-              <label for="path">Descrição</label>
-              <md-input
-                name="article-description"
-                id="article-description"
-                autocomplete="given-name"
-                v-model="article.description"
-                :disabled="sending || mode === 'remove'"
-              />
-              <span
-                class="md-error"
-                v-if="!$v.article.description.required"
-              >Por favor, informe a descrição do artigo</span>
-            </md-field>
-          </div>
-        </div>
+        <v-text-field
+          label="Descrição"
+          name="article-description"
+          id="article-description"
+          autocomplete="given-name"
+          v-model="article.description"
+          maxlength="60"
+          :disabled="sending || mode === 'remove'"
+          :rules="[rules.required]"
+          clearable
+        ></v-text-field>
 
-        <div class="md-layout md-gutter">
-          <div class="md-layout-item md-small-size-100">
-            <md-field>
-              <label for="path">Imagem URL</label>
-              <md-input
-                name="article-imageUrl"
-                id="article-imageUrl"
-                autocomplete="given-name"
-                v-model="article.imageUrl"
-                :disabled="sending || mode === 'remove'"
-              />
-            </md-field>
-          </div>
-        </div>
+        <v-text-field
+          name="article-imageUrl"
+          id="article-imageUrl"
+          autocomplete="given-name"
+          label="Imagem URL"
+          v-model="article.imageUrl"
+          :disabled="sending || mode === 'remove'"
+          clearable
+        />
 
         <!-- listagem de categorias -->
         <div v-if="mode === 'save'">
-          <div class="md-layout md-gutter">
-            <div class="md-layout-item md-small-size-100">
-              <md-field>
-                <label for="path">Categoria</label>
-                <md-select v-model="article.categoryId" name="path" id="article-category">
-                  <md-option
-                    v-for="(c, index) in categories"
-                    :key="index"
-                    :value="c.id"
-                    :disabled="mode === 'remove'"
-                  >{{ c.path }}</md-option>
-                </md-select>
-              </md-field>
-            </div>
-          </div>
-
+          <v-select
+            label="Categoria"
+            v-model="article.categoryId"
+            :items="categories"
+            item-text="path"
+            item-value="id"
+            :disabled="mode === 'remove'"
+          ></v-select>
           <!-- listagem de usuários -->
-          <div class="md-layout md-gutter">
-            <div class="md-layout-item md-small-size-100">
-              <md-field>
-                <label for="path">Autor</label>
-                <md-select v-model="article.userId" name="path" id="article-user">
-                  <md-option
-                    v-for="(u, index) in users"
-                    :key="index"
-                    :value="u.id"
-                    :disabled="mode === 'remove'"
-                  >{{ u.user }}</md-option>
-                </md-select>
-              </md-field>
-            </div>
-          </div>
+          <v-select
+            label="Usuário"
+            v-model="article.userId"
+            :items="users"
+            item-text="user"
+            item-value="id"
+            :disabled="mode === 'remove'"
+          ></v-select>
         </div>
 
         <!-- Editor de texto -->
         <div class="md-layout-item">
           <vue-editor v-model="article.content" placeholder="Era uma vez..."></vue-editor>
         </div>
-
-        <!-- Action buttons -->
-        <md-card-actions>
-          <md-button
-            type="submit"
-            class="md-primary md-raised"
-            :disabled="sending"
-            @click.prevent="saveArticle"
-            v-if="mode === 'save'"
-          >Salvar artigo</md-button>
-          <md-button
-            type="submit"
-            class="md-accent md-raised"
-            :disabled="sending"
-            @click.prevent="remove"
-            v-if="mode === 'remove'"
-          >Remover artigo</md-button>
-          <md-button type="submit" :disabled="sending" @click.prevent="clearForm">Cancelar</md-button>
-        </md-card-actions>
-      </md-card>
-    </form>
+      </v-card-text>
+      <!-- Action buttons -->
+      <v-card-actions>
+        <v-btn
+          type="submit"
+          primary
+          raised
+          :disabled="sending"
+          @click.prevent="saveArticle"
+          v-if="mode === 'save'"
+        >Salvar artigo</v-btn>
+        <v-btn
+          type="submit"
+          accent
+          raised
+          :disabled="sending"
+          @click.prevent="remove"
+          v-if="mode === 'remove'"
+        >Remover artigo</v-btn>
+        <v-btn type="submit" flat secondary :disabled="sending" @click.prevent="clearForm">Cancelar</v-btn>
+      </v-card-actions>
+    </v-form>
 
     <!-- Tabela de artigos -->
-    <md-table v-model="articles" md-sort="name" md-sort-order="asc" md-card>
-      <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
-        <md-table-cell md-label="Descrição" md-sort-by="description">{{ item.description }}</md-table-cell>
-
-        <md-table-cell md-label="Ações">
+    <v-data-table :headers="headers" :items="articles" v-model="articles">
+      <template v-slot:items="props">
+        <td>{{ props.item.name }}</td>
+        <td>{{ props.item.description }}</td>
+        <td>
           <template>
-            <md-button
-              class="md-icon-button md-raised md-primary md-dense"
-              @click="loadArticle(item)"
-            >
+            <v-btn class="md-icon-button md-raised md-primary md-dense" @click="loadArticle(props)">
               <i class="fa fa-pencil"></i>
-            </md-button>
-            <md-button
+            </v-btn>
+            <v-btn
               class="md-icon-button md-raised md-accent md-dense"
-              @click="loadArticle(item,'remove')"
+              @click="loadArticle(item, 'remove')"
             >
               <i class="fa fa-trash"></i>
-            </md-button>
+            </v-btn>
           </template>
-        </md-table-cell>
-      </md-table-row>
-    </md-table>
-    <b-pagination size="md" v-model="page" :total-rows="count" :per-page="limit"/>
+        </td>
+      </template>
+    </v-data-table>
   </div>
 </template>
 
@@ -170,7 +130,16 @@ export default {
     page: 1,
     limit: 0,
     count: 0,
-    sending: false
+    sending: false,
+    rules: {
+      required: value => !!value || "Por favor, preencha este campo.",
+      counter: value => value.length <= 20 || "Limite de 20 caractéres"
+    },
+    headers: [
+      { text: "Nome", value: "name" },
+      { text: "Descrição", value: "description" },
+      { text: "Ações" }
+    ]
   }),
   methods: {
     loadArticles() {
@@ -285,13 +254,6 @@ export default {
 </script>
 
 <style>
-.md-progress-bar {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-}
-
 .ql-snow {
   background-color: #ddd;
   color: darkslategray;
