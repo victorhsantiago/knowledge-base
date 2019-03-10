@@ -25,7 +25,8 @@ module.exports = app => {
             email: user.email,
             admin: user.admin,
             iat: now,
-            exp: now + (60 * 60 * 24 * 3)
+            exp: now + (60 * 60 * 24 * 14)
+            //          ^s   ^m   ^h   ^d
         }
 
         res.json({
@@ -37,13 +38,13 @@ module.exports = app => {
     const validateToken = async (req, res) => {
         const userData = req.body || null
         try {
-            if(userData) {
+            if (userData) {
                 const token = jwt.decode(userData.token, authSecret)
-                if(new Date(token.exp * 1000) > new Date()) {
+                if (new Date(token.exp * 1000) > new Date()) {
                     return res.send(true)
                 }
             }
-        } catch(e) {
+        } catch (e) {
             // problema com o token
         }
 
